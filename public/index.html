@@ -3,128 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <title>Игра Морской Бой</title>
-
-    <style type="text/css">
-        table {
-            border-collapse: collapse;
-            width:330px;
-            text-align:center;
-            table-layout: fixed
-        }
-        .AllyMap {position:absolute;left:30px;top:30px}
-        .EnemyMap {position:absolute;left:500px;top:30px}
-        th,td {
-            border: 1px solid black; /* Параметры рамки */
-            height: 30px;
-        }
-        .concbut {position:absolute;left:400px;top:390px}
-    </style>
+    <link rel="stylesheet" type="text/css" href="style.css" />
 </head>
-
-<button id="ready">Начать игру</button>
+<body>
+<button id="ready" class="rebut"></button>
 <button id="concede" class="concbut" style="display:none">Сдаться</button>
-
+<button id="acceptpos" class="accbut" style="display:none">Старт</button>
+<h2 id="stat" class="statinfo"></h2>
 <table id="AllyMap" class="AllyMap" style="visibility:hidden">
     <caption>Ваше поле</caption>
 </table>
 <table id="EnemyMap" class="EnemyMap" style="visibility:hidden">
-    <caption>Поле противника</caption>
+    <caption>Вражеское поле</caption>
 </table>
 
-<script>
-    var socket = new WebSocket('ws://localhost:8080');
-    socket.onopen = function() {
-        console.log("Соединение установлено.");
-    };
+<div class="logelem" id="authfd">
+    Логин  <input id="logfd">
+    Пароль <input type="password" id="passfd">
+    <br>
+    <button id="reg">Регистрация</button>
+    <button id="log">Вход</button>
+</div>
 
-    socket.onclose = function() {
-            console.log('Соединение закрыто')};
-
-    socket.onmessage = function(message) {
-        var args = JSON.parse(message.data);
-        switch(args[0]){
-            case 'bothready':
-                console.log("Игроки готовы, расстановка кораблей!");
-                showgameelements();
-                /*Здесь мы выбираем расположение кораблей, send('shipmap',матрица) + огран по таймеру*/
-                break;
-            case 'abandon':
-                alert("Другой игрок покинул игру! Вы победили!");
-                hidgameelements();
-                console.log("Другой игрок покинул игру!");
-                break;
-            case 'conceded':
-                alert("Другой игрок сдался! Вы победили!");
-                hidgameelements();
-                console.log("Другой игрок сдался!");
-                break;
-            case 'gameisready':
-                ready.innerHTML = "Присоединиться к игре";
-                break;
-            case 'gameisnotready':
-                ready.innerHTML = "Начать игру";
-                break;
-        }
-    };
-    ready.onclick = function(){
-        socket.send(JSON.stringify(['playerready']));
-        ready.style.display = "none";
-    }
-    concede.onclick = function(){
-        socket.send(JSON.stringify(['playerconceded']));
-        hidgameelements();
-    }
-</script>
-
-<script>
-    function createtable(itemid)
-    {
-        const letters = 'АБВГДЕЖЗИК'
-        let row = itemid.insertRow(0);
-        let cell = row.insertCell(0);
-        for(let i = 1;i<11;i++)
-        {
-            cell = row.insertCell(i);
-            cell.innerText = letters[i-1];
-        }
-        for(let i = 1;i<11;i++)
-        {
-            row = itemid.insertRow(i);
-            let cell = row.insertCell(0);
-            cell.innerText = i;
-            for(let j = 1;j<11;j++) {
-                cell = row.insertCell(j);
-                cell.addEventListener('click', cellHandler);
-            }
-        }
-        itemid.style.visibility = "visible";
-
-    }
-    function cleartable(itemid)
-    {
-        for(let i = 10; i >= 0; i--)
-            itemid.deleteRow(i);
-    }
-    function hidgameelements()
-    {
-        cleartable(AllyMap);
-        cleartable(EnemyMap);
-        ready.style.display = "initial";
-        concede.style.display = "none";
-        AllyMap.style.visibility = "hidden";
-        EnemyMap.style.visibility = "hidden";
-    }
-    function showgameelements()
-    {
-        createtable(AllyMap);
-        createtable(EnemyMap);
-        concede.style.display = "initial";
-    }
-
-    function cellHandler() {
-        this.style.background = "#32CD32";
-    }
-</script>
+<div class="lastgames" id="lastgames">
+    <table id="allgames" class="allgames">
+        <caption>Последние игры</caption>
+    </table>
+</div>
+<script src="/client.js"></script>
 
 
 </body>

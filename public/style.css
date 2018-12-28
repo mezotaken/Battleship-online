@@ -1,0 +1,61 @@
+table {
+    border-collapse: collapse;
+    text-align:center;
+    table-layout: fixed;
+}
+.AllyMap {
+    position:absolute;
+    left:30px;
+    top:60px;
+    width:330px;
+}
+.EnemyMap {
+    position:absolute;
+    left:500px;
+    top:60px;
+    width:330px;
+}
+th,td {
+    height: 30px;
+    border:1px solid black;
+}
+.allgames {
+    width:600px;
+}
+.concbut {
+    position:absolute;
+    left:400px;
+    top:420px;
+    width:70px;
+    height:20px;
+}
+.accbut {
+    position:absolute;
+    left:400px;
+    top:360px;
+    width:70px;
+    height:20px;
+}
+.rebut {
+    position:absolute;
+    left:30px;
+    top:100px;
+}
+.statinfo{
+    position:absolute;
+    left:30px;
+}
+.logelem{
+    position:absolute;
+    left:200px;
+    top:30px;
+}
+.lastgames{
+    height:300px;
+    width:600px;
+    overflow-x:hidden;
+    overflow-y:scroll;
+    border:1px solid black;
+    position:absolute;
+    top:300px;
+}
